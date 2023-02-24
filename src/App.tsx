@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./index.css";
-import { Layout, Table } from "antd";
+import { Layout } from "antd";
 import InputForm from "./components/Input";
 import MyTable, { Artist } from "./components/MyTable";
 import axios from "axios";
@@ -16,6 +16,7 @@ const App: React.FC = () => {
       .catch((error) => {
         console.log("error", error);
       });
+    // eslint-disable-next-line
   }, []);
   const OnNewValue = (artist: Artist) => {
     let _data = data;
