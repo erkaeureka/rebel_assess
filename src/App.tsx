@@ -1,26 +1,33 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useState } from "react";
+import "./index.css";
+import { Layout, Table } from "antd";
+import InputForm from "./components/Input";
+import MyTable, { Artist } from "./components/MyTable";
+import axios from "axios";
 
-function App() {
+const App: React.FC = () => {
+  const [data, setData] = useState<Artist[]>([]);
+  useEffect(() => {
+    axios
+      .get("https://rebel-test.azurewebsites.net/api/Artist")
+      .then((response) => {
+        setData(response.data);
+      })
+      .catch((error) => {
+        console.log("error", error);
+      });
+  }, []);
+  const OnNewValue = (artist: Artist) => {
+    let _data = data;
+    _data?.push(artist);
+    setData((_data) => [..._data, artist]);
+  };
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Layout style={{ margin: 20, flexDirection: "row" }}>
+      <InputForm onNewValue={OnNewValue} />
+      <MyTable data={data} />
+    </Layout>
   );
-}
+};
 
 export default App;
